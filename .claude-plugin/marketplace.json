@@ -1,0 +1,14 @@
+{
+  "name": "hiruno",
+  "owner": {
+    "name": "Hiruno",
+    "email": "elogoesrandom@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "hiruno",
+      "source": "./",
+      "description": "Viral script writing from a compounding database of proven short-form video components."
+    }
+  ]
+}

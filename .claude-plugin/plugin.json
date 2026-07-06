@@ -1,0 +1,17 @@
+{
+  "name": "hiruno",
+  "version": "0.2.0",
+  "description": "Write short-form video scripts from proven viral components. Connects Claude to the Hiruno winning database: analyze viral TikToks/Reels/Shorts into reusable patterns, retrieve evidence-ranked hooks/structures/CTAs, and compose scripts from what actually worked.",
+  "author": {
+    "name": "Hiruno",
+    "email": "elogoesrandom@gmail.com"
+  },
+  "homepage": "https://github.com/angelobaricante/hiruno-plugin",
+  "keywords": ["viral", "script", "tiktok", "reels", "shorts", "short-form", "content"],
+  "mcpServers": {
+    "hiruno": {
+      "type": "http",
+      "url": "https://wuabhsazqsbihuimornv.supabase.co/functions/v1/hiruno-mcp/mcp"
+    }
+  }
+}
