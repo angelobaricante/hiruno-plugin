@@ -33,7 +33,7 @@ account there.
 ## Install — claude.ai / Claude Desktop
 
 1. **Connector**: Settings → Connectors → *Add custom connector* →
-   `https://wuabhsazqsbihuimornv.supabase.co/functions/v1/hiruno-mcp/mcp`
+   `https://www.hiruno.com/mcp`
    Sign in / create your account when the authorization page opens.
 2. **Skill**: download `script-writer.zip` from this repo's
    [Releases](../../releases) (or build it with `scripts/package-skill.sh`)
