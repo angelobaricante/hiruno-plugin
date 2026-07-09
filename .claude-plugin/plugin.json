@@ -1,7 +1,7 @@
 {
   "name": "hiruno",
-  "version": "0.2.0",
-  "description": "Write short-form video scripts from proven viral components. Connects Claude to the Hiruno winning database: analyze viral TikToks/Reels/Shorts into reusable patterns, retrieve evidence-ranked hooks/structures/CTAs, and compose scripts from what actually worked.",
+  "version": "0.3.0",
+  "description": "Guided short-form video scripting from proven viral components. Connects Claude to the Hiruno winning database: set up your brand once, plan content weeks as evidence-grounded grids, analyze viral TikToks/Reels/Shorts into reusable patterns, and compose scripts from what actually worked.",
   "author": {
     "name": "Hiruno",
     "email": "elogoesrandom@gmail.com"
