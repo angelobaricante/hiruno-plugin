@@ -15,8 +15,17 @@ retrieval and writing are unlimited.
   evidence.
 - `find_winning_parts` — evidence-ranked script components for any topic
   (similarity × tier × multi-video proof × share rate).
-- `script-writer` skill — the workflow that turns those parts into a
-  finished, timed script with evidence-tagged hook alternatives.
+- `research_topic` — what proven videos actually SAY around a topic: ranked
+  idea cards (topic, substance, contrarian take), flops included as negative
+  evidence.
+- `get_brand_context` / `save_brand_context` — your brand context (intake,
+  posting tier, locked days, niche map, locked formats) saved to your
+  account, so every script is grounded in it without re-uploading anything.
+  Multiple named brands per account (agencies welcome).
+- `script-writer` skill — the guided workflow: one-time brand setup, weekly
+  batch planning (message bank → week grid → script-by-script), and
+  analyze-and-vary (change exactly one variable of a reference video into N
+  brand-adapted variations).
 - `get_source` / `log_created_script` — provenance drill-down and automatic
   tracking of what was written from which patterns.
 
@@ -41,14 +50,23 @@ account there.
 
 ## Use
 
-> analyze this video https://www.tiktok.com/@.../video/...
+> set up my brand
+
+> plan my content week
+
+> analyze this video https://www.tiktok.com/@.../video/... — then make 3
+> versions with a different hook
 
 > write me a 45s reel script about why most people fail at meal prepping
 
-The skill retrieves winning hooks/structures/CTAs for your topic, composes
-the script from them, and tags every choice with its evidence (tier, number
+Script writing always starts from your saved brand context (a one-time
+guided setup: intake → posting tier → locked days → niche map → locked
+formats). The skill then researches what winning videos say in your
+sub-niches, plans your week as a grid, and writes each script from winning
+hooks/structures/CTAs — every choice tagged with its evidence (tier, number
 of proven videos, niches). Cross-niche transfer is the point — a hook
-mechanic proven in fitness works in finance.
+mechanic proven in fitness works in finance. Analyzing videos and topic
+research need no setup at all.
 
 ## Layout
 

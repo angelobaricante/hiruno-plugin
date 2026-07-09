@@ -1,91 +1,157 @@
 ---
 name: script-writer
 description: >-
-  Write short-form video scripts (TikTok, Instagram Reels, YouTube Shorts,
-  Facebook) composed from proven viral components in the Hiruno winning
-  database. Use whenever the user wants a video script written, improved, or
-  adapted — "write me a script", "TikTok/Reels/Shorts script", "hook for my
-  video", "turn this idea into a video", "script about X for my niche" — or
-  after analyzing a viral video when the user wants their own version.
+  Guided short-form video scripting (TikTok, Instagram Reels, YouTube Shorts,
+  Facebook) grounded in the user's brand context and composed from proven
+  viral components in the Hiruno winning database. Use whenever the user
+  wants a video script written, improved, or adapted — "write me a script",
+  "hook for my video", "turn this idea into a video" — or wants to set up
+  their brand ("brand intake", "set up my brand/niche"), plan or batch a
+  content week ("plan my week", "batch my scripts"), or analyze a reference
+  video and spin brand-adapted variations from it ("analyze this video",
+  "make my version of this").
 ---
 
 # Script Writer
 
-Compose scripts from **retrieved evidence, not invention**. The Hiruno MCP
-tools are the source of truth for what works; the reference files in this
-skill supply shared vocabulary (hook-type names, beat names, format names) —
-they are never rules that override what the evidence says.
+Guide the user through the system every good post follows: **Message (what
+you say) + Format (how you package it)**. Compose from **retrieved evidence,
+not invention** — the Hiruno MCP tools are the source of truth for what
+works; the reference files in this skill supply shared vocabulary
+(hook-type names, beat names, format names), never rules that override
+evidence.
 
-## Workflow
+## Routing (start here every session)
 
-### 1. Light intake
+- **Any script work** (write, plan, batch, adapt, vary) → call
+  `get_brand_context` first. Found → confirm the brand in one line and
+  proceed. Several brands → ask which. None → run **Flow A (Brand Setup)**
+  before any script is written. Every script must be grounded in a brand
+  context — this gate is non-negotiable.
+- **Pure analysis or research** ("analyze this URL", "what's working in
+  fitness?") → no gate. Run `analyze_video` / `research_topic`, present the
+  result, then *offer* the next step ("want variations of this for your
+  brand?") — never force it.
+- A reference video URL + desire for their own version → **Flow C**.
+- "Plan my week / batch scripts" or a scripting ask with no specific topic →
+  **Flow B**.
+- A one-off ask with a specific topic → run Flow B steps 1 and 3 for a
+  single slot (message bank scoped to that topic, no grid).
 
-Infer everything you can from the request: topic, platform, niche, target
-length (default 30–60s), language/tone. Ask **at most 1–2 questions, only if
-genuinely blocked** — e.g. no topic at all. Never run a questionnaire; a vague
-ask like "write me a TikTok script about protein powder" is enough to start.
+## Flow A — Brand Setup (once per brand)
 
-### 2. Retrieve evidence (always, before writing)
+Conversational intake, one block at a time — collect, reflect back, move on.
+Everything downstream inherits from this: wrong audience here, wrong scripts
+later.
 
-Call `find_winning_parts` **separately per component** so each gets the best
-matches:
+1. **Brand intake** — what they sell (one line), main niche (the category
+   they compete in), audience (who actually buys — be specific), primary CTA
+   goal (reach / follows / clicks / DMs / sales), platforms, guardrails
+   (claims they can't make, tone, banned words, legal notes).
+2. **Pick a tier** — Easy 3 posts/week (solo or testing), Moderate 5
+   (standard growth), Hard 7+ (aggressive/launch). Frame it as *choose what
+   you can sustain, not what looks impressive* — consistency beats volume.
+3. **Lock days** — which days don't matter; committing to them does.
+4. **Name the niche** — the main niche plus **3–7 sub-niches** (the rows of
+   their content grid; each sub-niche is a recurring lane).
+5. **Lock formats** — run `research_topic` on the main niche and a couple of
+   sub-niches, aggregate the Format lines of the returned winning cards, and
+   propose **2–4 formats** with their evidence ("talking-head myth-bust —
+   proven in 3 adjacent-niche videos"). Thin evidence → propose from the
+   format references and label each one `taxonomy default`. Formats are
+   locked because repetition compounds: the user re-picks per video never.
 
-- `part_type: "spoken_hook"` — with the topic phrased as the viewer's
-  problem/curiosity, not the product
+On lock, write the whole thing as one markdown document with exactly these
+sections — **Brand Intake, Tier, Locked Days, Niche Map, Locked Formats** —
+and call `save_brand_context`. Future sessions parse these headings. Offer
+(don't require) the document as a file/download for the user's records.
+Re-save whenever any stable fact changes.
+
+## Flow B — Batch week (the default scripting flow)
+
+### 1. Message bank (fresh every session)
+
+Call `research_topic` once per sub-niche, phrased as the viewer's problem or
+curiosity, not the product. From the returned idea cards draft, per
+sub-niche, candidate **topics, contrarian takes, and substance** for this
+batch. Cards labeled DUD are negative evidence — angles that flopped. The
+bank is rebuilt each session on purpose: the database grows, ideas go stale.
+
+### 2. The grid (lock the week before writing a word)
+
+Tier × locked days = the batch size. Propose the week as one compact table —
+one row per posting slot:
+
+| Day | Sub-niche | Topic | Contrarian take | Format |
+
+Spread rules: no sub-niche appears twice before every sub-niche has appeared
+once; formats rotate through the locked set; guardrails respected in every
+take. Iterate at this level — grid edits are cheap, script rework is not —
+until the user **locks the grid**.
+
+### 3. Scripts, one slot at a time
+
+For the current slot, call `find_winning_parts` separately per component:
+
+- `part_type: "spoken_hook"` — query with the slot's topic as the viewer's
+  problem/curiosity
 - `part_type: "structure"`
-- `part_type: "cta"` — with the script's actual goal (follow, comment, buy…)
-- Optionally `topic_angle`, `contrarian_take`, or `substance` when the user
-  has a point of view worth sharpening
+- `part_type: "cta"` — query with the brand's actual CTA goal
 
-Pass `niche` when known — it is a soft boost, never a filter. **Cross-niche
+Pass the brand's niche — it is a soft boost, never a filter. **Cross-niche
 results are expected and good**: a hook mechanic proven in fitness transfers
-to finance. Judge patterns by mechanic fit, not by niche label.
+to finance. Judge patterns by mechanic fit, not niche label.
 
-If the script builds on a video the user already analyzed (`analyze_video` /
-`get_source` output in context), that video's own hook/structure/CTA/full
-script is the backbone; retrieval then sharpens each part.
-
-### 3. Compose
+Compose:
 
 - Prefer patterns with **higher tier and more videos** (`proven` from 8
   videos beats `strong` from 1). Treat `dud` entries strictly as what *not*
   to do.
-- Fill skeleton `{placeholders}` with the user's topic while keeping the
+- Fill skeleton `{placeholders}` with the slot's topic while keeping the
   original's **sentence rhythm, word economy, and plain 5th-grade language**.
-- Structure the script as timed beats (Hook 0–5s → Sell the Solution →
-  Principle → Application → CTA — see
+- Call `get_source(video_id)` before leaning heavily on any single pattern.
+- Apply the cross-cutting quality gates from
   [the framework reference](references/hiruno_viral_scripting_framework.md)
-  for what each beat does and when beats can be dropped for shorter videos).
-- Name hook and format choices using the taxonomy vocabulary (see
-  references) so users learn the language of the database.
-- Use `get_source(video_id)` before leaning heavily on any single pattern —
-  the full source video shows how the mechanic actually played out.
+  (hook under 10 words, retention layer, dual-track output, length rules).
+
+Deliver each script as the **card + timed beats**:
+
+> **Format · Topic · Contrarian Take · Substance · Spoken Hook · Visual
+> Hook · Text Hook · Story Structure · CTA · Visual Layout · Elements**
+
+followed by the timed script (spoken lines, on-screen text, visual
+directions), with hook/format choices named in taxonomy vocabulary and
+short evidence tags (`tier · n videos · proven in: niches`).
+
+Loop per slot: draft → feedback → **lock** → `log_created_script` (script
+text, one-line topic, every pattern ID actually used) → next slot, until the
+batch is done.
 
 **Thin evidence rule:** when retrieval returns nothing strong for a
 component, say so plainly ("no proven CTA patterns matched this topic yet")
-and label the fallback explicitly as a taxonomy default, chosen from the
-reference files. Never present an invented line as database-backed. Never
-block or ask the user for reference videos — proceed and be honest about
-which parts are evidence-backed.
+and label the fallback explicitly as a `taxonomy default` from the reference
+files. Never present an invented line as database-backed. Never block on
+missing evidence — proceed and be honest about which parts are backed.
 
-### 4. Present
+## Flow C — Analyze & vary (one-variable experiments)
 
-Deliver:
-
-1. **One full script** — timed beats, spoken lines, on-screen text, and
-   visual directions where they matter.
-2. **2–3 alternative hooks** (the highest-leverage, cheapest-to-vary part),
-   each tagged with its evidence: `tier · n videos · proven in: niches`.
-   Evidence-thin alternatives are tagged `taxonomy default`.
-
-Keep the evidence tags short — they build trust, not clutter.
-
-### 5. Log (always)
-
-After presenting the final script, call `log_created_script` **once** with
-the script text, one-line topic, and every pattern ID actually used
-(including hook alternatives' patterns). Fire-and-forget; at most a brief
-note to the user.
+1. `analyze_video(url)` — a link, not an upload. Ask whether it's the
+   user's own post when plausible and set `own_content` accordingly (keeps
+   the evidence honest). Present the returned breakdown **in full and
+   verbatim** (the tool output says so; honor it).
+2. Map the analysis onto the card fields — Topic, Contrarian Take,
+   Substance, Spoken/Visual/Text Hook, Story Structure, CTA, Format — and
+   ask which **one** field to change. One variable per experiment: that's
+   how the user learns what that variable does.
+3. Gate: `get_brand_context` (none → Flow A first, then return here).
+4. Ask how many variations.
+5. Pull N alternatives for the changed field from the winning database:
+   `find_winning_parts` for hook/structure/CTA fields, `research_topic` for
+   topic/take/substance, format references for Format. Everything else is
+   held from the reference video and adapted through the brand context
+   (audience, tone, guardrails, CTA goal).
+6. Per variation: draft → feedback → lock → `log_created_script` → next,
+   until all are locked.
 
 ## Reference files (vocabulary, not doctrine)
 
@@ -100,11 +166,13 @@ Load only what the task needs:
   for naming and for taxonomy-default fallbacks
 - [storytelling-formats.md](references/storytelling-formats.md),
   [educational-formats.md](references/educational-formats.md) — format
-  taxonomies for structure fallbacks
+  taxonomies for format locking and structure fallbacks
 
 ## Boundaries
 
 - Don't invent engagement claims: only cite tiers/metrics the tools returned.
-- Don't summarize `analyze_video` output — present it verbatim (the tool
-  output says so; honor it).
+- Don't summarize `analyze_video` output — present it verbatim.
+- Don't write any script without a brand context loaded; don't gate
+  analysis or research on one.
+- Logging is fire-and-forget: at most a brief note to the user.
 - This skill writes scripts; it does not post content or schedule anything.
